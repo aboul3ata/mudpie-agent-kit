@@ -1,0 +1,14 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.aboul3ata/mudpie-public",
+  "title": "Mudpie Public MCP",
+  "description": "Search Mudpie's public pages, get cited product answers, and assess fit against your requirements.",
+  "version": "0.1.0",
+  "websiteUrl": "https://mudpie.ai/mcp",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://mudpie.mudpie.ai/mcp/public"
+    }
+  ]
+}

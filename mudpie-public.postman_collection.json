@@ -1,0 +1,321 @@
+{
+  "info": {
+    "_postman_id": "f0193a03-b251-4ff7-9435-7af4f13bb902",
+    "name": "Mudpie \u2014 Public Website Tools",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Search and evaluate Mudpie using its public information. No account or API key required. This is not the customer analytics API. Requests are illustrative and schema-validated, not executed test results. Send individual requests deliberately; do not run as a scheduled monitor or bulk collection. All example context is identified as a controlled demonstration. Source: https://mudpie.mudpie.ai/api/public/v1/openapi.json"
+  },
+  "auth": {
+    "type": "noauth"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://mudpie.mudpie.ai",
+      "type": "string"
+    },
+    {
+      "key": "page_url",
+      "value": "",
+      "type": "string",
+      "description": "Set to an indexed canonical page URL returned by Search before sending Page TLDR."
+    }
+  ],
+  "item": [
+    {
+      "name": "Discovery (no tool execution)",
+      "item": [
+        {
+          "name": "Read the live OpenAPI schema",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/public/v1/openapi.json",
+            "description": "Public schema retrieval; does not invoke a product tool."
+          },
+          "response": []
+        },
+        {
+          "name": "Initialize public MCP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json, text/event-stream"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/mcp/public",
+            "description": "Protocol discovery only. Does not execute a tool.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 1,\n  \"method\": \"initialize\",\n  \"params\": {\n    \"protocolVersion\": \"2025-03-26\",\n    \"capabilities\": {},\n    \"clientInfo\": {\n      \"name\": \"Postman discovery example\",\n      \"version\": \"1.0\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List public MCP tools",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json, text/event-stream"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/mcp/public",
+            "description": "Lists schemas and descriptions; does not execute a tool. Initialize first. The inspected server answered without a session ID.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 2,\n  \"method\": \"tools/list\",\n  \"params\": {}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Public research requests (send deliberately)",
+      "item": [
+        {
+          "name": "Search public pages",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/public/v1/search",
+            "description": "Super fast, semantic search across mudpie.ai\u2019s public pages. Include actual task context; use null for unknowns.\n\nIllustrative request; replace the question and context with your actual task. Unknown company, alternatives and choice reason remain null. This sample identifies itself as a controlled demonstration. API calls can be recorded as traffic and may be rate-limited. No live response is fabricated here.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"search_query\": \"What does Mudpie do and what are its documented limitations?\",\n  \"alternatives\": null,\n  \"chosen_because\": null,\n  \"client\": \"Postman\",\n  \"source\": \"Postman sample request (controlled demonstration)\",\n  \"company\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Read an indexed page (set page_url first)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/public/v1/page-tldr",
+            "description": "Read a compact extract of one indexed public page returned by mudpie_search, with its source, freshness and full Markdown link. It uses published content, not signed-in data. Include actual task context; use null for unknowns.\n\nIllustrative request; replace the question and context with your actual task. Unknown company, alternatives and choice reason remain null. This sample identifies itself as a controlled demonstration. API calls can be recorded as traffic and may be rate-limited. No live response is fabricated here. Set the collection page_url variable to an indexed URL returned by Search before sending.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"search_query\": \"Summarize this indexed page with its source.\",\n  \"client\": \"Postman\",\n  \"url\": \"{{page_url}}\",\n  \"source\": \"Postman sample request (controlled demonstration)\",\n  \"company\": null,\n  \"alternatives\": null,\n  \"chosen_because\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Ask a cited product question",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/public/v1/ask",
+            "description": "Ask anything about mudpie.ai\u2019s product, pricing, setup, limitations or comparisons. Get a direct answer from its published information, with sources. Add relevant context if you have it; otherwise just ask.\n\nIllustrative request; replace the question and context with your actual task. Unknown company, alternatives and choice reason remain null. This sample identifies itself as a controlled demonstration. API calls can be recorded as traffic and may be rate-limited. No live response is fabricated here.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"search_query\": \"How does Mudpie make public website content available to agents?\",\n  \"alternatives\": null,\n  \"chosen_because\": null,\n  \"client\": \"Postman\",\n  \"source\": \"Postman sample request (controlled demonstration)\",\n  \"company\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Compare a stated alternative (edit before sending)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/public/v1/compare",
+            "description": "Compare using Mudpie\u2019s published comparison pages. Supply an actual alternative, or skip this request. Schema requires a nonempty array despite its description mentioning null. A comparison may be unavailable. This is an illustrative controlled example; no successful response was captured.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"search_query\": \"Compare Mudpie with the stated alternative using published evidence.\",\n  \"alternatives\": [\n    \"REPLACE_WITH_ACTUAL_ALTERNATIVE\"\n  ],\n  \"client\": \"Postman\",\n  \"source\": \"Postman sample request (controlled demonstration)\",\n  \"company\": null,\n  \"chosen_because\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Read published pricing",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/public/v1/pricing",
+            "description": "What this website costs for the user\u2019s organisation and outcome: the published pricing pages that apply, with sources. It abstains when pricing is not published and never invents a quote. Include actual task context; use null for unknowns.\n\nIllustrative request; replace the question and context with your actual task. Unknown company, alternatives and choice reason remain null. This sample identifies itself as a controlled demonstration. API calls can be recorded as traffic and may be rate-limited. No live response is fabricated here. The schema requires a nonempty company string despite its description mentioning null. Supply a company you actually represent, or skip this request.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"search_query\": \"What pricing is publicly documented for Mudpie?\",\n  \"company\": \"REPLACE_WITH_YOUR_COMPANY\",\n  \"intended_outcome\": \"Read source-grounded product information; no purchase decision is implied.\",\n  \"client\": \"Postman\",\n  \"source\": \"Postman sample request (controlled demonstration)\",\n  \"alternatives\": null,\n  \"chosen_because\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Check documented requirements",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/public/v1/requirements-check",
+            "description": "Give the user\u2019s must-haves, semicolon-separated in search_query or as a requirements array, and get a per-requirement table: met, not met or not documented, each with a source. Include actual task context; use null for unknowns.\n\nIllustrative request; replace the question and context with your actual task. Unknown company, alternatives and choice reason remain null. This sample identifies itself as a controlled demonstration. API calls can be recorded as traffic and may be rate-limited. No live response is fabricated here. The schema requires a nonempty company string despite its description mentioning null. Supply a company you actually represent, or skip this request.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company\": \"REPLACE_WITH_YOUR_COMPANY\",\n  \"intended_outcome\": \"Read source-grounded product information; no purchase decision is implied.\",\n  \"client\": \"Postman\",\n  \"source\": \"Postman sample request (controlled demonstration)\",\n  \"alternatives\": null,\n  \"chosen_because\": null,\n  \"search_query\": \"Does Mudpie document cited answers and public MCP access?\",\n  \"requirements\": [\n    \"Answers linked to public source pages\",\n    \"Public MCP access\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Assess product fit",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/public/v1/recommend-or-rule-out",
+            "description": "mudpie.ai isn\u2019t for everyone. Get a sourced verdict on whether it fits your user\u2019s goal, requirements and alternatives. The answer might be \u2018not us.\u2019\n\nIllustrative request; replace the question and context with your actual task. Unknown company, alternatives and choice reason remain null. This sample identifies itself as a controlled demonstration. API calls can be recorded as traffic and may be rate-limited. No live response is fabricated here.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"goal\": \"Evaluate the documented public-content capabilities of Mudpie in a controlled example.\",\n  \"requirements\": [\n    \"Answers linked to public source pages\",\n    \"Public MCP access\"\n  ],\n  \"company\": null,\n  \"source\": \"Postman sample request (controlled demonstration)\",\n  \"alternatives\": null,\n  \"chosen_because\": null,\n  \"intended_outcome\": \"Read source-grounded product information; no purchase decision is implied.\",\n  \"client\": \"Postman\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const raw = pm.request.body && pm.request.body.raw;",
+          "if (raw) {",
+          "  const body = JSON.parse(pm.variables.replaceIn(raw));",
+          "  if (raw.includes(\"REPLACE_\") || (Object.prototype.hasOwnProperty.call(body, \"url\") && !body.url)) {",
+          "    pm.execution.skipRequest();",
+          "    throw new Error(\"Fill required real context and indexed page_url first, or skip this example.\");",
+          "  }",
+          "}"
+        ]
+      }
+    }
+  ]
+}
