@@ -1,0 +1,4 @@
+interface:
+  display_name: "WebMCP Analytics"
+  short_description: "Verify WebMCP execution, outcomes, and adoption"
+  default_prompt: "Use $webmcp-analytics to check one WebMCP task end to end and separate test activity from real adoption."

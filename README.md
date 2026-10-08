@@ -1,6 +1,6 @@
 # Mudpie agent kit
 
-Connect to Mudpie's public information, or help an owner install Mudpie on their own website.
+Connect to Mudpie's public information, install Mudpie on your website, or measure whether your WebMCP tools complete real tasks.
 
 - [Mudpie](https://mudpie.ai/) · [Public tool guide](https://mudpie.ai/mcp) · [Live OpenAPI schema](https://mudpie.mudpie.ai/api/public/v1/openapi.json)
 - Public MCP endpoint: `https://mudpie.mudpie.ai/mcp/public`
@@ -47,6 +47,16 @@ You can also copy the skill folder using your client's supported local-skill ins
 Start with the intended account/site at [app.mudpie.ai](https://app.mudpie.ai/) and obtain its generated installation guide. The skill helps apply that guide, preserve existing site behavior, and verify public discovery. It cannot provision a site or guess site-specific values. Never reuse Mudpie's own site ID, verification proof or public knowledge endpoint as a customer's configuration.
 
 A tool listing proves discovery, not execution or organic adoption. A local build proves neither deployment nor complete page-request tracking.
+
+## Measure WebMCP use
+
+Use the [webmcp-analytics skill](skills/webmcp-analytics/SKILL.md) to trace discovery, invocation, retries, failures, and verified outcomes without counting your own tests as adoption.
+
+```sh
+npx skills add aboul3ata/mudpie-agent-kit --skill webmcp-analytics
+```
+
+Based on [A WebMCP analytics implementation checklist](https://mudpie.ai/webmcp/guides/webmcp-analytics-checklist/). It works with your existing analytics; Mudpie is optional. The skill contains instructions only and does not grant account access or run tests automatically.
 
 ## Registry metadata and verification
 
