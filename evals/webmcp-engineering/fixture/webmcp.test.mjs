@@ -115,13 +115,20 @@ test('adapter: registered hints match domain effects and user text remains inert
 });
 
 
-test('adapter: Unicode length boundaries agree with JSON Schema and domain validation', async () => {
+test('adapter: schema-derived Unicode boundaries agree with domain acceptance', async () => {
   const f = setup(); await f.integration.ready;
-  const accepted = await f.call('save_draft', {title:'😀'.repeat(120), body:'𐐀'.repeat(2000)});
-  assert.equal([...accepted.draft.title].length,120);
-  assert.equal([...accepted.draft.body].length,2000);
-  await assert.rejects(f.call('save_draft',{title:'😀'.repeat(121),body:''}));
-  await assert.rejects(f.call('save_draft',{title:'Valid',body:'𐐀'.repeat(2001)}));
-  assert.equal(f.app.listDrafts().length,1);
+  const { properties } = f.registry.get('save_draft').inputSchema;
+  for (const field of ['title', 'body']) {
+    const max = properties[field].maxLength;
+    assert.ok(Number.isSafeInteger(max) && max > 0);
+    const input = {title:'Valid', body:'', [field]:'😀'.repeat(max)};
+    assert.equal([...input[field]].length, max, 'valid at published code-point boundary');
+    const receipt = await f.call('save_draft', input);
+    assert.equal(receipt.draft[field], input[field]);
+    const tooLong = {...input, [field]:input[field]+'𐐀'};
+    assert.ok([...tooLong[field]].length > max, 'invalid by published maxLength');
+    await assert.rejects(f.call('save_draft', tooLong));
+  }
+  assert.equal(f.app.listDrafts().length,2);
   f.integration.dispose();
 });
