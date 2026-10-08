@@ -1,8 +1,3 @@
----
-name: webmcp-analytics
-description: Implement or audit measurement for a website's WebMCP tools, tracing discovery, invocation, retries, failures, and verified outcomes. Use when checking whether browser tools work or whether recorded activity represents real adoption.
----
-
 # Measure WebMCP use
 
 Turn one real user task into a trace you can verify. A registered tool, a successful response, and a completed user task are different evidence.

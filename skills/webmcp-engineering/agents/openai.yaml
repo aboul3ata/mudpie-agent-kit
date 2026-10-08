@@ -1,0 +1,4 @@
+interface:
+  display_name: "WebMCP Engineering"
+  short_description: "Build and verify state-aware WebMCP integrations"
+  default_prompt: "Use $webmcp-engineering to add a small, useful WebMCP workflow to this app and verify its actual outcome."
