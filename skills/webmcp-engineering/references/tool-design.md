@@ -18,7 +18,7 @@ For each tool, settle:
 - **Result:** observed state, stable identifiers, and a concise status. For asynchronous work, return the actual pending status and a supported way to inspect it.
 - **Failure:** distinguish invalid input, unavailable state, denial, rate limit, cancellation, timeout, and backend failure where the runtime permits. Give a useful correction without leaking private data.
 
-Use the existing parser. Keep the published schema and runtime acceptance aligned: if unknown properties are disallowed, reject them in code too. Test omissions, extra fields, type mismatches, out-of-range values, and partial writes. A successful promise carrying a fabricated success-shaped object is not acceptable error handling.
+Use the existing parser. Keep the published schema and runtime acceptance aligned: if unknown properties are disallowed, reject them in code too. Test omissions, extra fields, type mismatches, out-of-range values, and partial writes. Check boundary semantics across layers too: JSON Schema string lengths count Unicode code points, while JavaScript `.length` and HTML `maxlength` use UTF-16 units. Preserve a consistent product rule instead of advertising a different limit. A successful promise carrying a fabricated success-shaped object is not acceptable error handling.
 
 ## Races at the consequence boundary
 

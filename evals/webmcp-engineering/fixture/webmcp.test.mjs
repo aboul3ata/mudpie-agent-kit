@@ -113,3 +113,15 @@ test('adapter: registered hints match domain effects and user text remains inert
   assert.deepEqual(f.app.listDrafts(), [], 'user text must not create drafts in another account');
   f.integration.dispose();
 });
+
+
+test('adapter: Unicode length boundaries agree with JSON Schema and domain validation', async () => {
+  const f = setup(); await f.integration.ready;
+  const accepted = await f.call('save_draft', {title:'😀'.repeat(120), body:'𐐀'.repeat(2000)});
+  assert.equal([...accepted.draft.title].length,120);
+  assert.equal([...accepted.draft.body].length,2000);
+  await assert.rejects(f.call('save_draft',{title:'😀'.repeat(121),body:''}));
+  await assert.rejects(f.call('save_draft',{title:'Valid',body:'𐐀'.repeat(2001)}));
+  assert.equal(f.app.listDrafts().length,1);
+  f.integration.dispose();
+});

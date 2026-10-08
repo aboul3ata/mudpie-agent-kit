@@ -14,9 +14,11 @@ The coordinating agent inspected the generated implementation and tested it thro
 
 The first implementation omitted read-only and untrusted-content annotations. We added an explicit behavior-to-annotation table to the general tool-design guidance. The implementation agent then fixed both descriptors and added descriptor-versus-effect coverage. That repair is development feedback, not a fresh blind acceptance score.
 
+Independent PR review also caught Unicode length disagreement in the original fixture: JavaScript counted UTF-16 units while JSON Schema counted code points. We aligned the domain limit, removed the conflicting HTML code-unit limits (domain validation still runs on submit), and added code-point boundary cases. The skill now explicitly calls out cross-layer string-length semantics.
+
 ## Observed results
 
-- Six Node adapter/domain tests passed on Node v22.18.0: validation, pagination, account isolation, stale descriptors, account switch-away-and-back, pending writes during navigation, cancellation, registration delay/failure, remount, and hints versus effects. Tests use a fake registry and do not establish native browser compatibility.
+- Seven Node adapter/domain tests passed on Node v22.18.0: validation, pagination, account isolation, stale descriptors, account switch-away-and-back, pending writes during navigation, cancellation, registration delay/failure, remount, and hints versus effects. Tests use a fake registry and do not establish native browser compatibility.
 - Codex desktop 26.930.51102 exposed both tools from the served fixture. The final descriptors included readOnlyHint and untrustedContentHint values matching their behavior.
 - A normal form submission created a local draft that the inspection tool returned. A tool save normalized surrounding title whitespace through the existing domain function, and the visible UI showed the same result.
 - Switching from account alpha to beta produced an empty beta draft list. Navigating to Home removed both tools from the exposed registry.

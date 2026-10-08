@@ -10,7 +10,7 @@ export function createApp() {
   };
   const parseDraft = input => {
     if (!input || typeof input !== 'object' || Array.isArray(input) || Object.keys(input).some(k => !['title','body'].includes(k))) throw new Error('Expected title and body only');
-    if (typeof input.title !== 'string' || !input.title.trim() || input.title.length > 120 || typeof input.body !== 'string' || input.body.length > 2000) throw new Error('Invalid draft');
+    if (typeof input.title !== 'string' || !input.title.trim() || [...input.title].length > 120 || typeof input.body !== 'string' || [...input.body].length > 2000) throw new Error('Invalid draft');
     return { title: input.title.trim(), body: input.body };
   };
   return {
