@@ -1,6 +1,6 @@
 # Mudpie agent kit
 
-Connect to Mudpie's public information, or help an owner install Mudpie on their own website.
+Connect to Mudpie's public information, install Mudpie on your website, or build and evaluate WebMCP tools that complete real tasks.
 
 - [Mudpie](https://mudpie.ai/) · [Public tool guide](https://mudpie.ai/mcp) · [Live OpenAPI schema](https://mudpie.mudpie.ai/api/public/v1/openapi.json)
 - Public MCP endpoint: `https://mudpie.mudpie.ai/mcp/public`
@@ -47,6 +47,20 @@ You can also copy the skill folder using your client's supported local-skill ins
 Start with the intended account/site at [app.mudpie.ai](https://app.mudpie.ai/) and obtain its generated installation guide. The skill helps apply that guide, preserve existing site behavior, and verify public discovery. It cannot provision a site or guess site-specific values. Never reuse Mudpie's own site ID, verification proof or public knowledge endpoint as a customer's configuration.
 
 A tool listing proves discovery, not execution or organic adoption. A local build proves neither deployment nor complete page-request tracking.
+
+## Build and evaluate WebMCP tools
+
+Use [webmcp-engineering](skills/webmcp-engineering/SKILL.md) to integrate browser tools into an existing app, preserve its state and permission boundaries, and test actual task outcomes.
+
+```sh
+npx skills add aboul3ata/mudpie-agent-kit --skill webmcp-engineering
+```
+
+The skill covers native versus MCP-B runtime choices, forms and state-dependent actions, cancellation and retries, human handoff, independent outcome checks, and adoption measurement. It draws on [Chrome, MCP-B, Stripe, Sierra, Decagon, and existing skills](skills/webmcp-engineering/references/sources.md), with explicit limits on what each source establishes.
+
+See the [bounded evaluation and reproducible fixture](evals/webmcp-engineering/README.md) for what was actually checked.
+
+Read the companion [WebMCP analytics checklist](https://mudpie.ai/webmcp/guides/webmcp-analytics-checklist/). Mudpie is optional. This is an instruction skill: it does not install a browser runtime, create accounts, or execute production actions by itself.
 
 ## Registry metadata and verification
 
